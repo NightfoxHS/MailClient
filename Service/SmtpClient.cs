@@ -37,33 +37,83 @@ namespace MailClient.Service
             Password = auth;
 
             Connect(host, port);
-            NetworkStream strm = new NetworkStream(server);
-            string cmdData;
-            byte[] sdData;
+            using (NetworkStream strm = new NetworkStream(server))
+            {
+                string cmdData;
+                byte[] sdData;
 
-            //Login
-            cmdData = "HELO" + host.ToString() + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+                //Login
+                cmdData = "HELO" + host.ToString() + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
 
-            cmdData = "AUTH LOGIN" + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
-            
-            cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(User)) + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+                cmdData = "AUTH LOGIN" + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
 
-            cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(Password)) + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+                cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(User)) + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
 
-            State = States.Login;
+                cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(Password)) + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+
+                State = States.Login;
+            }
         }
 
-        public void Send(string from, string[] to, string message)
+        public void Send(string from, string[] to, string subject, string message)
         {
+            using(NetworkStream strm = new NetworkStream(server))
+            {
+                string cmdData;
+                byte[] sdData;
 
+                State = States.Sending;
+
+                cmdData = "MAIL FROM: <" + from + '>' + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+
+                foreach(string t in to)
+                {
+                    cmdData = "RCPT TO: <" + t + '>' + Const.CRLF;
+                    sdData = Encoding.ASCII.GetBytes(cmdData);
+                    strm.Write(sdData, 0, sdData.Length);
+                }
+
+                cmdData = "DATA" + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+
+                cmdData = "from: " + from + Const.CRLF;
+                cmdData += "to: " + String.Join(",", to) + Const.CRLF;
+                cmdData += "subject: " + subject + Const.CRLF;
+                cmdData += Const.CRLF;
+                cmdData += (message + Const.CRLF + '.' + Const.CRLF);
+                sdData = Encoding.UTF8.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+
+                State = States.Login;
+            }
+        }
+
+        public void Quit()
+        {
+            using(NetworkStream strm = new NetworkStream(server))
+            {
+                string cmdData;
+                byte[] sdData;
+
+                cmdData = "QUIT" + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+
+                server.Close();
+
+                State = States.DisConn;
+            }
         }
 
         
