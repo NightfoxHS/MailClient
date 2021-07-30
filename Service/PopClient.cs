@@ -30,7 +30,11 @@ namespace MailClient.Service
         {
             Host = host;
             Port = port;
-            server.Connect(Host, Port);
+            using(NetworkStream strm = new NetworkStream(server))
+            {
+                server.Connect(Host, Port);
+                Check(strm);
+            }
 
             State = States.Connect;
         }
