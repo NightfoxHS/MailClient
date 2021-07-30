@@ -17,7 +17,7 @@ namespace MailClient.Service
     class Const
     {
         public static string CRLF = "\r\n";
-        public static Dictionary<string, string> Error = new Dictionary<string, string>
+        public static Dictionary<string, string> SmtpError = new Dictionary<string, string>
         {
             //BASIC
             {"450","Requested mail action not taken: mailbox unavailable" },

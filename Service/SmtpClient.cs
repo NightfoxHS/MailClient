@@ -30,14 +30,18 @@ namespace MailClient.Service
         {
             Host = host;
             Port = port;
-            server.Connect(Host, Port);
+            using(NetworkStream strm = new NetworkStream(server))
+            {
+                server.Connect(Host, Port);
+                Check(strm, "220");
+            }
             State = States.Connect;
         }
         
-        public void Login(IPAddress host, int port, string user, string auth)
+        public void Login(IPAddress host, int port, string user, string password)
         {
             User = user;
-            Password = auth;
+            Password = password;
 
             Connect(host, port);
             using (NetworkStream strm = new NetworkStream(server))
@@ -131,26 +135,35 @@ namespace MailClient.Service
         {
             bool flag = false;
 
-            StreamReader rd = new StreamReader(strm);
-            string res = rd.ReadLine();
-            Log.Add(res);
-            foreach(string e in expected)
+            using (StreamReader rd = new StreamReader(strm))
             {
-                if (res.Contains(e))
-                    flag = true;
-                    break;
-            }
-
-            if (!flag)
-            {
-                Quit();
-                if(Const.Error.TryGetValue(res.Substring(0,3),out string err))
+                if (strm.DataAvailable)
                 {
-                    throw new WebException(err);
+                    string res = rd.ReadLine();
+                    Log.Add(res);
+                    foreach (string e in expected)
+                    {
+                        if (res.Contains(e))
+                            flag = true;
+                        break;
+                    }
+
+                    if (!flag)
+                    {
+                        Quit();
+                        if (Const.SmtpError.TryGetValue(res.Substring(0, 3), out string err))
+                        {
+                            throw new WebException(err);
+                        }
+                        else
+                        {
+                            throw new WebException("Unknown Error");
+                        }
+                    }
                 }
                 else
                 {
-                    throw new WebException("Unknown Error");
+                    throw new WebException("No data to read");
                 }
             }
             return flag;
