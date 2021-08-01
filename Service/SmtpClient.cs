@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using MailClient.Model;
 
 namespace MailClient.Service
 {
@@ -106,6 +107,46 @@ namespace MailClient.Service
                 cmdData += "subject: " + subject + Const.CRLF;
                 cmdData += Const.CRLF;
                 cmdData += (message + Const.CRLF + '.' + Const.CRLF);
+                sdData = Encoding.UTF8.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+                Check(strm, "250");
+
+                State = States.Login;
+            }
+        }
+
+        public void Send(Mail mail)
+        {
+            using (NetworkStream strm = new NetworkStream(server))
+            {
+                string cmdData;
+                byte[] sdData;
+
+                State = States.Sending;
+
+                cmdData = "MAIL FROM: <" + mail.From + '>' + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+                Check(strm, "250", "251");
+
+                foreach (string t in mail.To)
+                {
+                    cmdData = "RCPT TO: <" + t + '>' + Const.CRLF;
+                    sdData = Encoding.ASCII.GetBytes(cmdData);
+                    strm.Write(sdData, 0, sdData.Length);
+                    Check(strm, "250", "251");
+                }
+
+                cmdData = "DATA" + Const.CRLF;
+                sdData = Encoding.ASCII.GetBytes(cmdData);
+                strm.Write(sdData, 0, sdData.Length);
+                Check(strm, "354");
+
+                cmdData = "from: " + mail.From + Const.CRLF;
+                cmdData += "to: " + String.Join(",", mail.To) + Const.CRLF;
+                cmdData += "subject: " + mail.Subject + Const.CRLF;
+                cmdData += Const.CRLF;
+                cmdData += (mail.Message + Const.CRLF + '.' + Const.CRLF);
                 sdData = Encoding.UTF8.GetBytes(cmdData);
                 strm.Write(sdData, 0, sdData.Length);
                 Check(strm, "250");
