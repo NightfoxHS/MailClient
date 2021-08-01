@@ -63,7 +63,7 @@ namespace MailClient.Service
             }
         }
 
-        public string GetMail(int index)
+        public string GetMail(int index)  
         {
             StringBuilder res = new StringBuilder(256);
             
