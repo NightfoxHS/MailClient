@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using MailClient.Model;
-using System.Collections.Generic;
 
 
 
@@ -242,10 +240,11 @@ namespace MailClient.TransformContent
             StreamReader stream;
             stream = new StreamReader(GenerateStreamFromString(oriContent));
             string row = stream.ReadLine();
-            while (row != "\r\n") { row = stream.ReadLine(); }
+            while (row != "") { row = stream.ReadLine(); }
             //此时在第一个CRLF的位置 ？采取直接全部读取的方法，可能要改进
             while (stream.EndOfStream == false)
             {
+                row = stream.ReadLine();
                 s += row;
             }
             return s;
