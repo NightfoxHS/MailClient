@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using MailClient.Model;
+using MailClient.TransformContent;
 
 namespace MailClient.Service
 {
@@ -89,9 +91,10 @@ namespace MailClient.Service
             return res.ToString();
         }
 
-        public List<string> GetAllMail()
+        //对原来的函数进行更改
+        public List<Mail> GetAllMail()
         {
-            List<string> ret = new List<string>();
+            List<Mail> ret = new List<Mail>();
 
 
             string cmdData;
@@ -115,7 +118,10 @@ namespace MailClient.Service
 
             for (int i = 1; i <= num; i++)
             {
-                ret.Add(GetMail(i));
+                Transform NewTransform= new Transform();
+                NewTransform.transform(GetMail(i));
+                Mail NewMail = new Mail(i,NewTransform.MailFrom,NewTransform.Subject,NewTransform.Content,NewTransform.Date,NewTransform.MailTo);
+                ret.Add(NewMail);
             }
 
 

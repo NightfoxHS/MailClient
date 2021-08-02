@@ -2,16 +2,18 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using MailClient.Model;
+using System.Collections.Generic;
 
 
 
 //对解析过来的邮件内容进行解析
-namespace MailClient.Transform
+namespace MailClient.TransformContent
 {
-    class Transform
+    public class Transform
     {
         public string Content { get; set; }
-        public string MailTo { get; set; }
+        public string[] MailTo { get; set; }
         public string MailFrom { get; set; }
         public string Subject { get; set; }
         public string Date { get; set; }
@@ -19,7 +21,9 @@ namespace MailClient.Transform
         //一般有text,multipart等类型,返回值为如{"text","html","gbk"}
         public string TransferEncoding { get; set; }
 
+        public Transform() { }
 
+        //原来的函数只包含对于一封邮件进行解析
         public void transform(string oriContent)
         {
             StreamReader stream;
@@ -44,7 +48,9 @@ namespace MailClient.Transform
                 {
                     try
                     {
-                        MailTo = row.Substring(row.IndexOf(":") + 2);
+                        
+                        MailTo = row.Substring(row.IndexOf(":") + 2).Trim().Split(' ');
+
 
                     }
                     catch (Exception e) { throw e.InnerException; }

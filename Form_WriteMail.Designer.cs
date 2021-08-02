@@ -1,7 +1,7 @@
 ﻿
 namespace MailClient
 {
-    partial class Form1
+    partial class Form_WriteMail
     {
         /// <summary>
         /// Required designer variable.

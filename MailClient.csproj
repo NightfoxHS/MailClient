@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Form_WriteMail.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Form_WriteMail.Designer.cs">
+      <DependentUpon>Form_WriteMail.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Setting.cs">
       <SubType>Form</SubType>
@@ -72,8 +72,8 @@
     <Compile Include="Service\PopClient.cs" />
     <Compile Include="Service\SmtpClient.cs" />
     <Compile Include="Service\TransformContent.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Form_WriteMail.resx">
+      <DependentUpon>Form_WriteMail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>

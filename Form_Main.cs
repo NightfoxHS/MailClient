@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MailClient.Service;
 using MailClient.Model;
-using MailClient.Transform;
+using MailClient.TransformContent;
 
 namespace MailClient
 {
