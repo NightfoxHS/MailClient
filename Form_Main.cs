@@ -17,7 +17,7 @@ namespace MailClient
     {
         public SmtpClient smtp;
         public PopClient pop;
-        public User user;
+        public User user = new User();
         public List<Mail> mails = new List<Mail>();
 
         public Form_Main()

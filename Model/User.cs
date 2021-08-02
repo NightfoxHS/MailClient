@@ -9,9 +9,9 @@ namespace MailClient.Model
 {
     public class User
     {
-        public IPAddress SmtpHost { get; set; }
+        public string SmtpHost { get; set; }
         public int SmtpPort { get; set; }
-        public IPAddress PopHost { get; set; }
+        public string PopHost { get; set; }
         public int PopPort { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }

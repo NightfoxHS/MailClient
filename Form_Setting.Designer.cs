@@ -30,6 +30,10 @@ namespace MailClient
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.TextBox_UserName = new System.Windows.Forms.TextBox();
+            this.TextBox_Pop_Port = new System.Windows.Forms.TextBox();
+            this.TextBox_Pop = new System.Windows.Forms.TextBox();
+            this.TextBox_Smtp_Port = new System.Windows.Forms.TextBox();
             this.Label_Smtp = new System.Windows.Forms.Label();
             this.Label_Smtp_Port = new System.Windows.Forms.Label();
             this.Label_Pop = new System.Windows.Forms.Label();
@@ -37,10 +41,6 @@ namespace MailClient
             this.Label_UserName = new System.Windows.Forms.Label();
             this.Label_Password = new System.Windows.Forms.Label();
             this.TextBox_Smtp = new System.Windows.Forms.TextBox();
-            this.TextBox_Smtp_Port = new System.Windows.Forms.TextBox();
-            this.TextBox_Pop = new System.Windows.Forms.TextBox();
-            this.TextBox_Pop_Smtp = new System.Windows.Forms.TextBox();
-            this.TextBox_UserName = new System.Windows.Forms.TextBox();
             this.TextBox_Password = new System.Windows.Forms.TextBox();
             this.Button_OK = new System.Windows.Forms.Button();
             this.Button_Cancel = new System.Windows.Forms.Button();
@@ -55,7 +55,7 @@ namespace MailClient
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel1.Controls.Add(this.TextBox_UserName, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.TextBox_Pop_Smtp, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.TextBox_Pop_Port, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.TextBox_Pop, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.TextBox_Smtp_Port, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.Label_Smtp, 0, 0);
@@ -79,6 +79,38 @@ namespace MailClient
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(522, 458);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // TextBox_UserName
+            // 
+            this.TextBox_UserName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBox_UserName.Location = new System.Drawing.Point(159, 215);
+            this.TextBox_UserName.Name = "TextBox_UserName";
+            this.TextBox_UserName.Size = new System.Drawing.Size(202, 25);
+            this.TextBox_UserName.TabIndex = 10;
+            // 
+            // TextBox_Pop_Port
+            // 
+            this.TextBox_Pop_Port.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBox_Pop_Port.Location = new System.Drawing.Point(445, 124);
+            this.TextBox_Pop_Port.Name = "TextBox_Pop_Port";
+            this.TextBox_Pop_Port.Size = new System.Drawing.Size(74, 25);
+            this.TextBox_Pop_Port.TabIndex = 9;
+            // 
+            // TextBox_Pop
+            // 
+            this.TextBox_Pop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBox_Pop.Location = new System.Drawing.Point(159, 124);
+            this.TextBox_Pop.Name = "TextBox_Pop";
+            this.TextBox_Pop.Size = new System.Drawing.Size(202, 25);
+            this.TextBox_Pop.TabIndex = 8;
+            // 
+            // TextBox_Smtp_Port
+            // 
+            this.TextBox_Smtp_Port.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBox_Smtp_Port.Location = new System.Drawing.Point(445, 33);
+            this.TextBox_Smtp_Port.Name = "TextBox_Smtp_Port";
+            this.TextBox_Smtp_Port.Size = new System.Drawing.Size(74, 25);
+            this.TextBox_Smtp_Port.TabIndex = 7;
             // 
             // Label_Smtp
             // 
@@ -148,38 +180,6 @@ namespace MailClient
             this.TextBox_Smtp.Size = new System.Drawing.Size(202, 25);
             this.TextBox_Smtp.TabIndex = 6;
             // 
-            // TextBox_Smtp_Port
-            // 
-            this.TextBox_Smtp_Port.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBox_Smtp_Port.Location = new System.Drawing.Point(445, 33);
-            this.TextBox_Smtp_Port.Name = "TextBox_Smtp_Port";
-            this.TextBox_Smtp_Port.Size = new System.Drawing.Size(74, 25);
-            this.TextBox_Smtp_Port.TabIndex = 7;
-            // 
-            // TextBox_Pop
-            // 
-            this.TextBox_Pop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBox_Pop.Location = new System.Drawing.Point(159, 124);
-            this.TextBox_Pop.Name = "TextBox_Pop";
-            this.TextBox_Pop.Size = new System.Drawing.Size(202, 25);
-            this.TextBox_Pop.TabIndex = 8;
-            // 
-            // TextBox_Pop_Smtp
-            // 
-            this.TextBox_Pop_Smtp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBox_Pop_Smtp.Location = new System.Drawing.Point(445, 124);
-            this.TextBox_Pop_Smtp.Name = "TextBox_Pop_Smtp";
-            this.TextBox_Pop_Smtp.Size = new System.Drawing.Size(74, 25);
-            this.TextBox_Pop_Smtp.TabIndex = 9;
-            // 
-            // TextBox_UserName
-            // 
-            this.TextBox_UserName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBox_UserName.Location = new System.Drawing.Point(159, 215);
-            this.TextBox_UserName.Name = "TextBox_UserName";
-            this.TextBox_UserName.Size = new System.Drawing.Size(202, 25);
-            this.TextBox_UserName.TabIndex = 10;
-            // 
             // TextBox_Password
             // 
             this.TextBox_Password.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -198,6 +198,7 @@ namespace MailClient
             this.Button_OK.TabIndex = 12;
             this.Button_OK.Text = "确定";
             this.Button_OK.UseVisualStyleBackColor = true;
+            this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
             // 
             // Button_Cancel
             // 
@@ -208,6 +209,7 @@ namespace MailClient
             this.Button_Cancel.TabIndex = 13;
             this.Button_Cancel.Text = "取消";
             this.Button_Cancel.UseVisualStyleBackColor = true;
+            this.Button_Cancel.Click += new System.EventHandler(this.Button_Cancel_Click);
             // 
             // Form_Setting
             // 
@@ -229,7 +231,7 @@ namespace MailClient
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label Label_Smtp;
         private System.Windows.Forms.TextBox TextBox_UserName;
-        private System.Windows.Forms.TextBox TextBox_Pop_Smtp;
+        private System.Windows.Forms.TextBox TextBox_Pop_Port;
         private System.Windows.Forms.TextBox TextBox_Pop;
         private System.Windows.Forms.TextBox TextBox_Smtp_Port;
         private System.Windows.Forms.Label Label_Smtp_Port;

@@ -14,7 +14,7 @@ namespace MailClient.Service
         private Socket server;
         public string User { get; set; }
         public string Password { private get; set; }
-        public IPAddress Host { get; set; }
+        public string Host { get; set; }
         public int Port { get; set; }
         public States State { get; set; }
         public List<string> Log;
@@ -26,7 +26,7 @@ namespace MailClient.Service
             Log = new List<string>();
         }
 
-        public void Connect(IPAddress host, int port)
+        public void Connect(String host, int port)
         {
             Host = host;
             Port = port;
@@ -39,11 +39,12 @@ namespace MailClient.Service
             State = States.Connect;
         }
 
-        public void Login(IPAddress host, int port, string user, string password)
+        public void Login(string host, int port, string user, string password)
         {
             User = user;
             Password = password;
 
+            Connect(host, port);
             using (NetworkStream strm = new NetworkStream(server))
             {
                 string cmdData;
