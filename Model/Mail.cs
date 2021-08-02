@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MailClient.Model
 {
-    class Mail
+    public class Mail
     {
         public int ID { get; set; }
         public string From { get; set; }

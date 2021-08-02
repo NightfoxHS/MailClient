@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MailClient.Service
 {
-    enum States
+    public enum States
     {
         DisConn,
         Connect,
@@ -14,7 +14,7 @@ namespace MailClient.Service
         Sending,
         Receiving
     }
-    class Const
+    public class Const
     {
         public static string CRLF = "\r\n";
         public static Dictionary<string, string> SmtpError = new Dictionary<string, string>

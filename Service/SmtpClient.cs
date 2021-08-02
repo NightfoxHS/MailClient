@@ -10,7 +10,7 @@ using MailClient.Model;
 
 namespace MailClient.Service
 {
-    class SmtpClient
+    public class SmtpClient
     {
         private Socket server;
         public string User { get; set; }

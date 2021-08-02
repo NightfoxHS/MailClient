@@ -9,7 +9,7 @@ using System.IO;
 
 namespace MailClient.Service
 {
-    class PopClient
+    public class PopClient
     {
         private Socket server;
         public string User { get; set; }
