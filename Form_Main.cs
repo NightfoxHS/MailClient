@@ -15,8 +15,8 @@ namespace MailClient
 {
     public partial class Form_Main : Form
     {
-        public SmtpClient smtp;
-        public PopClient pop;
+        public SmtpClient smtp = new SmtpClient();
+        public PopClient pop = new PopClient();
         public User user = new User();
         public List<Mail> mails = new List<Mail>();
 
@@ -34,6 +34,26 @@ namespace MailClient
         {
             Form_Setting setting = new Form_Setting(user);
             setting.Show();
+        }
+
+        private void ToolStripButton_Login_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (user.HasValue)
+                {
+                    smtp.Login(user.SmtpHost, user.SmtpPort, user.UserName, user.Password);
+                    pop.Login(user.PopHost, user.PopPort, user.UserName, user.Password);
+                }
+                else
+                {
+                    throw new ApplicationException("无用户信息，请到设置中设置");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

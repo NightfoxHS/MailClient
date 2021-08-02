@@ -181,6 +181,7 @@ namespace MailClient
             this.ToolStripButton_Login.Name = "ToolStripButton_Login";
             this.ToolStripButton_Login.Size = new System.Drawing.Size(29, 39);
             this.ToolStripButton_Login.Text = "登录";
+            this.ToolStripButton_Login.Click += new System.EventHandler(this.ToolStripButton_Login_Click);
             this.ToolStripButton_Login.MouseEnter += new System.EventHandler(this.ToolStripButton_Login_MouseEnter);
             // 
             // ToolStripButton_Refresh
