@@ -38,9 +38,9 @@ namespace MailClient
                 && TextBox_UserName.TextLength>0 && TextBox_Password.TextLength > 0)
             {
                 usr.SmtpHost = TextBox_Smtp.Text;
-                usr.SmtpPort = Convert.ToInt32(TextBox_Smtp_Port);
+                usr.SmtpPort = Convert.ToInt32(TextBox_Smtp_Port.Text);
                 usr.PopHost = TextBox_Pop.Text;
-                usr.PopPort = Convert.ToInt32(TextBox_Pop_Port);
+                usr.PopPort = Convert.ToInt32(TextBox_Pop_Port.Text);
                 usr.UserName = TextBox_UserName.Text;
                 usr.Password = TextBox_Password.Text;
                 usr.HasValue = true;

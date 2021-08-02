@@ -23,11 +23,7 @@ namespace MailClient
         public Form_Main()
         {
             InitializeComponent();
-        }
-
-        private void ToolStripButton_Login_MouseEnter(object sender, EventArgs e)
-        {
-            ToolTip_Login.Show("登录", (Button)sender);
+            tableLayoutPanel_Mail.Visible = false;
         }
 
         private void ToolStripButton_Setting_Click(object sender, EventArgs e)
@@ -53,6 +49,18 @@ namespace MailClient
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (smtp.State != States.DisConn)
+            {
+                smtp.Quit();
+            }
+            if (pop.State != States.DisConn)
+            {
+                pop.Quit();
             }
         }
     }

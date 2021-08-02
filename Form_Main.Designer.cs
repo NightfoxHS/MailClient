@@ -29,7 +29,6 @@ namespace MailClient
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -52,7 +51,6 @@ namespace MailClient
             this.Label_Subject_V = new System.Windows.Forms.Label();
             this.Label_Subject = new System.Windows.Forms.Label();
             this.textBox_Message = new System.Windows.Forms.TextBox();
-            this.ToolTip_Login = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.ToolStrip_DownMenu.SuspendLayout();
@@ -131,9 +129,9 @@ namespace MailClient
             // Button_Write
             // 
             this.Button_Write.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Button_Write.Location = new System.Drawing.Point(43, 4);
+            this.Button_Write.Location = new System.Drawing.Point(43, 3);
             this.Button_Write.Name = "Button_Write";
-            this.Button_Write.Size = new System.Drawing.Size(91, 33);
+            this.Button_Write.Size = new System.Drawing.Size(91, 36);
             this.Button_Write.TabIndex = 1;
             this.Button_Write.Text = "写信";
             this.Button_Write.UseVisualStyleBackColor = true;
@@ -182,7 +180,6 @@ namespace MailClient
             this.ToolStripButton_Login.Size = new System.Drawing.Size(29, 39);
             this.ToolStripButton_Login.Text = "登录";
             this.ToolStripButton_Login.Click += new System.EventHandler(this.ToolStripButton_Login_Click);
-            this.ToolStripButton_Login.MouseEnter += new System.EventHandler(this.ToolStripButton_Login_MouseEnter);
             // 
             // ToolStripButton_Refresh
             // 
@@ -305,6 +302,7 @@ namespace MailClient
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form_Main";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -340,7 +338,6 @@ namespace MailClient
         private System.Windows.Forms.Label Label_Subject_V;
         private System.Windows.Forms.Label Label_Subject;
         private System.Windows.Forms.TextBox textBox_Message;
-        private System.Windows.Forms.ToolTip ToolTip_Login;
     }
 }
 
