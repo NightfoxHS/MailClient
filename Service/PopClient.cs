@@ -80,7 +80,7 @@ namespace MailClient.Service
 
             string _res = "";
 
-            while (_res != ".")
+            while (_res != "." + Const.CRLF)
             {
                 res.Append(_res);
                 _res = rd.ReadLine();
@@ -148,19 +148,15 @@ namespace MailClient.Service
         public bool Check()
         {
             bool flag = false;
-            if (strm.DataAvailable)
+            string res = rd.ReadLine();
+            Log.Add(res);
+            if (res[0] == '+')
             {
-                string res = rd.ReadLine();
-                Log.Add(res);
-                if (res[0] == '+')
-                {
-                    flag = true;
-                }
-                else
-                {
-                    Quit();
-                    throw new WebException("Error");
-                }
+                flag = true;
+            }
+            else
+            {
+                throw new WebException("Error");
             }
 
             return flag;

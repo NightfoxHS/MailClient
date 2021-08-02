@@ -108,6 +108,8 @@ namespace MailClient
             listBox1.DisplayMember = "Subject";
             listBox1.SelectedIndex = 0;
 
+            tableLayoutPanel_Mail.Visible = true;
+
             Mail selectMail = listBox1.SelectedItem as Mail;
             Label_From_V.Text = selectMail.From;
             Label_To_V.Text = String.Join(",", selectMail.To);

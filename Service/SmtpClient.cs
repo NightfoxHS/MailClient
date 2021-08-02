@@ -55,7 +55,6 @@ namespace MailClient.Service
             sdData = Encoding.ASCII.GetBytes(cmdData);
             strm.Write(sdData, 0, sdData.Length);
             Check("250");
-            Console.WriteLine("HELO");
 
             cmdData = "AUTH LOGIN" + Const.CRLF;
             sdData = Encoding.ASCII.GetBytes(cmdData);
@@ -139,14 +138,29 @@ namespace MailClient.Service
         public bool Check(params string[] expected)
         {
             bool flag = false;
+            string res = "";
 
-            string res = rd.ReadLine();
-            Log.Add(res);
+            if (expected.Contains("250"))
+            {
+                do
+                {
+                    res = rd.ReadLine();
+                    Log.Add(res);
+                } while (!res.Contains("OK"));
+            }
+            else
+            {
+                res = rd.ReadLine();
+                Log.Add(res);
+            }
+            
             foreach (string e in expected)
             {
                 if (res.Contains(e))
+                {
                     flag = true;
-                break;
+                    break;
+                }
             }
 
             if (!flag)
