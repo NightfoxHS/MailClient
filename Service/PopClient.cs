@@ -98,7 +98,7 @@ namespace MailClient.Service
             return res.ToString();
         }
 
-        public List<string> GetAllMain()
+        public List<string> GetAllMail()
         {
             List<string> ret = new List<string>();
 
