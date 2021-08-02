@@ -18,7 +18,7 @@ namespace MailClient
         public SmtpClient smtp = new SmtpClient();
         public PopClient pop = new PopClient();
         public User user = new User();
-        public List<Mail> mails = new List<Mail>();
+        public List<Mail> mails;
 
         public Form_Main()
         {
@@ -40,6 +40,8 @@ namespace MailClient
                 {
                     smtp.Login(user.SmtpHost, user.SmtpPort, user.UserName, user.Password);
                     pop.Login(user.PopHost, user.PopPort, user.UserName, user.Password);
+                    mails = pop.GetAllMail();
+                    ResetListBox();
                 }
                 else
                 {
@@ -62,6 +64,55 @@ namespace MailClient
             {
                 pop.Quit();
             }
+        }
+
+        private void Button_Write_Click(object sender, EventArgs e)
+        {
+            Form_WriteMail wrt = new Form_WriteMail(smtp);
+            wrt.Show();
+        }
+
+        private void ToolStripButton_Refresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (pop.State == States.Login)
+                {
+                    mails = pop.GetAllMail();
+                    ResetListBox();
+                }
+                else
+                {
+                    throw new ApplicationException("错误发生，请重启客户端或稍后重试");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Mail selectMail = listBox1.SelectedItem as Mail;
+
+            Label_From_V.Text = selectMail.From;
+            Label_To_V.Text = String.Join(",", selectMail.To);
+            Label_Subject_V.Text = selectMail.Subject;
+            WebBrowser_Message.DocumentText = selectMail.Message;
+        }
+
+        private void ResetListBox()
+        {
+            listBox1.DataSource = mails;
+            listBox1.DisplayMember = "Subject";
+            listBox1.SelectedIndex = 0;
+
+            Mail selectMail = listBox1.SelectedItem as Mail;
+            Label_From_V.Text = selectMail.From;
+            Label_To_V.Text = String.Join(",", selectMail.To);
+            Label_Subject_V.Text = selectMail.Subject;
+            WebBrowser_Message.DocumentText = selectMail.Message;
         }
     }
 }

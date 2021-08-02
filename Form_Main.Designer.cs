@@ -50,7 +50,7 @@ namespace MailClient
             this.Label_From = new System.Windows.Forms.Label();
             this.Label_Subject_V = new System.Windows.Forms.Label();
             this.Label_Subject = new System.Windows.Forms.Label();
-            this.textBox_Message = new System.Windows.Forms.TextBox();
+            this.WebBrowser_Message = new System.Windows.Forms.WebBrowser();
             this.tableLayoutPanel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.ToolStrip_DownMenu.SuspendLayout();
@@ -135,6 +135,7 @@ namespace MailClient
             this.Button_Write.TabIndex = 1;
             this.Button_Write.Text = "写信";
             this.Button_Write.UseVisualStyleBackColor = true;
+            this.Button_Write.Click += new System.EventHandler(this.Button_Write_Click);
             // 
             // listBox1
             // 
@@ -146,6 +147,7 @@ namespace MailClient
             this.tableLayoutPanel1.SetRowSpan(this.listBox1, 7);
             this.listBox1.Size = new System.Drawing.Size(171, 288);
             this.listBox1.TabIndex = 2;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // Label_List_Title
             // 
@@ -189,6 +191,7 @@ namespace MailClient
             this.ToolStripButton_Refresh.Name = "ToolStripButton_Refresh";
             this.ToolStripButton_Refresh.Size = new System.Drawing.Size(29, 39);
             this.ToolStripButton_Refresh.Text = "刷新";
+            this.ToolStripButton_Refresh.Click += new System.EventHandler(this.ToolStripButton_Refresh_Click);
             // 
             // ToolStripButton_Setting
             // 
@@ -211,7 +214,7 @@ namespace MailClient
             this.tableLayoutPanel_Mail.Controls.Add(this.Label_From, 0, 1);
             this.tableLayoutPanel_Mail.Controls.Add(this.Label_Subject_V, 1, 0);
             this.tableLayoutPanel_Mail.Controls.Add(this.Label_Subject, 0, 0);
-            this.tableLayoutPanel_Mail.Controls.Add(this.textBox_Message, 0, 3);
+            this.tableLayoutPanel_Mail.Controls.Add(this.WebBrowser_Message, 0, 3);
             this.tableLayoutPanel_Mail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_Mail.Location = new System.Drawing.Point(180, 3);
             this.tableLayoutPanel_Mail.Name = "tableLayoutPanel_Mail";
@@ -284,15 +287,15 @@ namespace MailClient
             this.Label_Subject.TabIndex = 0;
             this.Label_Subject.Text = "标题：";
             // 
-            // textBox_Message
+            // WebBrowser_Message
             // 
-            this.tableLayoutPanel_Mail.SetColumnSpan(this.textBox_Message, 2);
-            this.textBox_Message.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox_Message.Location = new System.Drawing.Point(3, 126);
-            this.textBox_Message.Multiline = true;
-            this.textBox_Message.Name = "textBox_Message";
-            this.textBox_Message.Size = new System.Drawing.Size(521, 285);
-            this.textBox_Message.TabIndex = 6;
+            this.tableLayoutPanel_Mail.SetColumnSpan(this.WebBrowser_Message, 2);
+            this.WebBrowser_Message.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WebBrowser_Message.Location = new System.Drawing.Point(3, 126);
+            this.WebBrowser_Message.MinimumSize = new System.Drawing.Size(20, 20);
+            this.WebBrowser_Message.Name = "WebBrowser_Message";
+            this.WebBrowser_Message.Size = new System.Drawing.Size(521, 285);
+            this.WebBrowser_Message.TabIndex = 6;
             // 
             // Form_Main
             // 
@@ -337,7 +340,7 @@ namespace MailClient
         private System.Windows.Forms.Label Label_From;
         private System.Windows.Forms.Label Label_Subject_V;
         private System.Windows.Forms.Label Label_Subject;
-        private System.Windows.Forms.TextBox textBox_Message;
+        private System.Windows.Forms.WebBrowser WebBrowser_Message;
     }
 }
 

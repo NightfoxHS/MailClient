@@ -120,7 +120,7 @@ namespace MailClient.Service
             {
                 Transform NewTransform= new Transform();
                 NewTransform.transform(GetMail(i));
-                Mail NewMail = new Mail(i,NewTransform.MailFrom,NewTransform.Subject,NewTransform.Content,NewTransform.Date,NewTransform.MailTo);
+                Mail NewMail = new Mail(NewTransform.MailFrom,NewTransform.Subject,NewTransform.Content,NewTransform.Date,NewTransform.MailTo);
                 ret.Add(NewMail);
             }
 

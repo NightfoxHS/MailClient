@@ -8,7 +8,6 @@ namespace MailClient.Model
 {
     public class Mail
     {
-        public int ID { get; set; }
         public string From { get; set; }
         public List<string> To { get; }
         public List<string> Cc { get; }
@@ -19,13 +18,12 @@ namespace MailClient.Model
         public string Date { get; set; }
         //bool HasAttach { get; set; } // 暂时不用
 
-        public Mail(int id, string from, string subject, string message = "", string date = "", params string[] to)
+        public Mail(string from, string subject, string message = "", string date = "", params string[] to)
         {
             To = new List<string>();
             Cc = new List<string>();
             Bcc = new List<string>();
 
-            ID = id;
             From = from;
             Subject = subject;
             Message = message;

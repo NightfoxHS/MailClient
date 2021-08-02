@@ -93,7 +93,6 @@ namespace MailClient
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(498, 38);
             this.textBox1.TabIndex = 0;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // textBox2
             // 
@@ -196,7 +195,7 @@ namespace MailClient
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // Form1
+            // Form_WriteMail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -207,8 +206,8 @@ namespace MailClient
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.richTextBox1);
-            this.Name = "Form1";
-            this.Text = "Form_WriteMail";
+            this.Name = "Form_WriteMail";
+            this.Text = "写信";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);

@@ -7,24 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MailClient.Service;
+using MailClient.Model;
 
 namespace MailClient
 {
     public partial class Form_WriteMail : Form
     {
-        public Form_WriteMail()
+        private SmtpClient smtp;
+        public Form_WriteMail(SmtpClient smtp)
         {
             InitializeComponent();
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            this.smtp = smtp;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,7 +36,18 @@ namespace MailClient
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            string[] to;
+            Mail mail;
+            if (textBox3.Text.Contains(",") || textBox3.Text.Contains("，"))
+            {
+               to = textBox3.Text.Split(',', '，');
+               mail = new Mail(textBox2.Text, textBox1.Text, richTextBox1.Text,DateTime.Now.ToString() ,to);
+            }
+            else
+            {
+                mail = new Mail(textBox2.Text, textBox1.Text, richTextBox1.Text, DateTime.Now.ToString(), textBox3.Text);
+            }
+            smtp.Send(mail);
         }
     }
 }
