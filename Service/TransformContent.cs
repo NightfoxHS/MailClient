@@ -127,7 +127,7 @@ namespace MailClient.TransformContent
                                 }
                                 else
                                 {
-                                    while (row.IndexOf("==") == -1)
+                                    while (row.IndexOf("------=_NextPart") == -1)
                                     {
                                         Content += row;
                                         row = stream.ReadLine();
