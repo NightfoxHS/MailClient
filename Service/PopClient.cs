@@ -116,10 +116,12 @@ namespace MailClient.Service
                 throw new WebException("Error");
             }
 
+            List<Transform> transformList = new List<Transform>();
             for (int i = 1; i <= num; i++)
             {
-                Transform NewTransform= new Transform();
-                NewTransform.transform(GetMail(i));
+                Transform NewTransform = new Transform();
+                transformList.Add(NewTransform);
+                transformList[i-1].transform(GetMail(i));
                 Mail NewMail = new Mail(NewTransform.MailFrom,NewTransform.Subject,NewTransform.Content,NewTransform.Date,NewTransform.MailTo);
                 ret.Add(NewMail);
             }

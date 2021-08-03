@@ -31,7 +31,7 @@ namespace MailClient.TransformContent
             {
                 row = stream.ReadLine();
 
-                if (row.IndexOf("From:") != -1)
+                if (row.IndexOf("From:") != -1&& row.IndexOf("<")!=-1)
                 {
                     try
                     {
@@ -42,12 +42,24 @@ namespace MailClient.TransformContent
                     catch (Exception e) { throw e.InnerException; }
                     continue;
                 }
-                if (row.IndexOf("To:") != -1)
+                if (row.IndexOf("To:") != -1 && row.IndexOf("<") != -1)
                 {
                     try
                     {
                         
-                        MailTo = row.Substring(row.IndexOf(":") + 2).Trim().Split(' ');
+                        string[] AMailTo;
+                        AMailTo = row.Substring(row.IndexOf(":") + 2).Trim().Split(' ');
+                        MailTo = new string[3];
+                        for(int k = 1; k < AMailTo.Length; k++)
+                        {
+                            MailTo[k - 1] = AMailTo[k];
+                            if (MailTo[k - 1].IndexOf("<") != -1)
+                            {
+                                int i = MailTo[k-1].IndexOf("<");
+                                int j = MailTo[k-1].IndexOf(">");
+                                MailTo[k - 1] = MailTo[k - 1].Substring(i + 1, j - i - 1);
+                            }
+                        }
 
 
                     }
@@ -73,46 +85,76 @@ namespace MailClient.TransformContent
                     catch (Exception e) { throw e.InnerException; }
                     continue;
                 }
-                if (row.IndexOf("Content-Type") != -1)
+                if (row.IndexOf("This is a multi-part message in MIME format") != -1)
                 {
-                    string[] str, rt, s3;
-                    string s = row;
-                    rt = new string[3];
-                    s += stream.ReadLine(); //把下一行的charset加上
-                    s = s.Replace('"', ' ');
-                    str = s.Split(';');
-                    str[0] = str[0].Trim();//分别处理两段
-                    str[1] = str[1].Trim();
-                    s3 = str[0].Substring(str[0].IndexOf(" ") + 1).Trim().Split('/');
-                    rt[0] = s3[0];
-                    rt[1] = s3[1];
-                    rt[2] = str[1].Substring(str[1].IndexOf("=") + 1).Trim();
-                    try
+                    while (stream.EndOfStream == false)
                     {
-                        ContentType = new string[3];
-                        ContentType = rt;
+                        row = stream.ReadLine();
+                        if (row.IndexOf("Content-Type") != -1)
+                        {
+                            string[] str, rt, s3;
+                            string s = row;
+                            rt = new string[3];
+                            s += stream.ReadLine(); //把下一行的charset加上
+                            s = s.Replace('"', ' ');
+                            str = s.Split(';');
+                            str[0] = str[0].Trim();//分别处理两段
+                            str[1] = str[1].Trim();
+                            s3 = str[0].Substring(str[0].IndexOf(" ") + 1).Trim().Split('/');
+                            rt[0] = s3[0];
+                            rt[1] = s3[1];
+                            rt[2] = str[1].Substring(str[1].IndexOf("=") + 1).Trim();
+                            try
+                            {
+                                this.ContentType = rt;
+                            }
+                            catch (Exception e) { throw e.InnerException; }
+                            continue;
+                        }
+                        if (row.IndexOf("Content-Transfer-Encoding:") != -1)
+                        {
+                            try
+                            {
+                                string ecoding= row.Substring((row.IndexOf(":") + 2));                                                               
+                                this.TransferEncoding = ecoding;                               
+                                //把content内容放在Content-Transfer-Ecodong后面
+                                row = stream.ReadLine();
+                                
+                                if(row == "") { row = stream.ReadLine(); }
+                                if (row.IndexOf("==") != -1)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    while (row.IndexOf("==") == -1)
+                                    {
+                                        Content += row;
+                                        row = stream.ReadLine();
+                                    }
+                                }/*
+                                if (row == "") { row = stream.ReadLine(); }
+                                while(row != "")
+                                {
+                                    Content += row;
+                                    row = stream.ReadLine();
+                                }*/
+                            }
+                            catch (Exception e) { throw e.InnerException; }
+                            continue;
+                        }
 
                     }
-                    catch (Exception e) { throw e.InnerException; }
-                    continue;
-                }
-                if (row.IndexOf("Content-Transfer-Encoding:") != -1)
-                {
-                    try
-                    {
-                        TransferEncoding = row.Substring((row.IndexOf(":") + 2));
-                    }
-                    catch (Exception e) { throw e.InnerException; }
-                    continue;
                 }
             }
+            //Console.WriteLine(ContentType[0] + ContentType[1] + ContentType[2]);
             //最后对邮件的内容进行解码.适用不同处理方式
             if (ContentType[0] == "text")
             {
                 switch (TransferEncoding)
                 {
                     case "base64":
-                        Content = Encoding.GetEncoding(ContentType[2].ToUpper()).GetString(Convert.FromBase64String(GetContent(oriContent)));
+                        Content = Encoding.GetEncoding(ContentType[2].ToUpper()).GetString(Convert.FromBase64String(Content));
                         break;
                     case "quoted-printable":
                         Content = QuotedPrintable(GetContent(oriContent), ContentType[2]);
@@ -172,9 +214,13 @@ namespace MailClient.TransformContent
             //标题的正则表达式
             Regex regex = new Regex(@"=\?([\s\S]+)\?=");
             MatchCollection match = regex.Matches(subject);
-            for (int i = 0; i < match.Count; i++)
+            if (match.Count <= 0) { }
+            else
             {
-                subject = subject.Replace(match[i].Value, ConvertStr(match[i].Value));
+                for (int i = 0; i < match.Count; i++)
+                {
+                    subject = subject.Replace(match[i].Value, ConvertStr(match[i].Value));
+                }
             }
             return subject;
         }
