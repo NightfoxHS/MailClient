@@ -22,14 +22,12 @@ namespace MailClient
             this.usr = usr;
             if (this.usr.HasValue)
             {
-                
                 TextBox_Smtp.Text = usr.SmtpHost.ToString();
                 TextBox_Smtp_Port.Text = usr.SmtpPort.ToString();
                 TextBox_Pop.Text = usr.PopHost.ToString();
                 TextBox_Pop_Port.Text = usr.PopPort.ToString();
                 TextBox_UserName.Text = usr.UserName;
                 TextBox_Password.Text = usr.Password;
-           
             }
         }
 
@@ -37,7 +35,7 @@ namespace MailClient
         {
             if(TextBox_Smtp.TextLength > 0 && TextBox_Smtp_Port.TextLength > 0
                 && TextBox_Pop.TextLength > 0 && TextBox_Pop_Port.TextLength > 0
-                && TextBox_UserName.TextLength>0 && TextBox_Password.TextLength > 0)
+                && TextBox_UserName.TextLength > 0 && TextBox_Password.TextLength > 0)
             { 
                 usr.SmtpHost = TextBox_Smtp.Text;
                 usr.SmtpPort = Convert.ToInt32(TextBox_Smtp_Port.Text);
@@ -46,8 +44,6 @@ namespace MailClient
                 usr.UserName = TextBox_UserName.Text;
                 usr.Password = TextBox_Password.Text;
                 usr.HasValue = true;
-                
-              
             }
             this.Close();
         }

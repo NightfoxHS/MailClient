@@ -68,8 +68,22 @@ namespace MailClient
 
         private void Button_Write_Click(object sender, EventArgs e)
         {
-            Form_WriteMail wrt = new Form_WriteMail(smtp);
-            wrt.Show();
+            try
+            {
+                if (smtp.State == States.Login)
+                {
+                    Form_WriteMail wrt = new Form_WriteMail(smtp);
+                    wrt.Show();
+                }
+                else
+                {
+                    throw new ApplicationException("请先完成用户信息设置并登录");
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void ToolStripButton_Refresh_Click(object sender, EventArgs e)
