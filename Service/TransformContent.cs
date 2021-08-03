@@ -129,8 +129,13 @@ namespace MailClient.TransformContent
                                 {
                                     while (row.IndexOf("------=_NextPart") == -1)
                                     {
-                                        Content += row;
-                                        row = stream.ReadLine();
+                                        if (ContentType[1] == "html")
+                                        {
+                                            Content += row;
+                                            row = stream.ReadLine();
+                                        }
+                                        else { row = stream.ReadLine(); }
+
                                     }
                                 }/*
                                 if (row == "") { row = stream.ReadLine(); }
