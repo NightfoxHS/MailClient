@@ -130,6 +130,17 @@ namespace MailClient.Service
             return ret;
         }
 
+        public void Delete(int index)
+        {
+            string cmdData;
+            byte[] sdData;
+
+            cmdData = "DELE " + index + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check();
+        }
+
         public void Quit()
         {
             string cmdData;
