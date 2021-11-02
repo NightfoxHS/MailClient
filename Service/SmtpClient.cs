@@ -29,7 +29,7 @@ namespace MailClient.Service
             Log = new List<string>();
         }
 
-        public void Connect(string host,int port)
+        private void Connect(string host,int port)
         {
             Host = host;
             Port = port;

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MailClient.Service.SmtpClient" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAgAAAAAAAAAAEAAAIAACQgACAACAAAQBAAAARI=</HashCode>
+      <FileName>Service\SmtpClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailClient.Service.PopClient" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAgAAAAAAAABAAAAIIAACQkACAACAAAQBAAAARI=</HashCode>
+      <FileName>Service\PopClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailClient.TransformContent.Transform" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAAgAAAAAAAMAAAAIAAEAEAAABACEQAAAAgAA=</HashCode>
+      <FileName>Service\TransformContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailClient.Form_Main" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMAAgAMAJCAFAJAgABCQANASABAAAgIICABCogAAgSE=</HashCode>
+      <FileName>Form_Main.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailClient.Form_Setting" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAGACAAAQAQKAQAECQAAAAACBBAQYAAAEACA=</HashCode>
+      <FileName>Form_Setting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailClient.Form_WriteMail" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAABCAAABAAAACAAABCAAA4AAAAEHAQAQAAACA=</HashCode>
+      <FileName>Form_WriteMail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailClient.Model.Mail">
+    <Position X="3" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAIAAAACAAQAIAAABAAAAIAIAABg=</HashCode>
+      <FileName>Model\Mail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
