@@ -46,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_WriteMail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_WriteMail.Designer.cs">
+      <DependentUpon>Form_WriteMail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Setting.Designer.cs">
+      <DependentUpon>Form_Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,13 +65,21 @@
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Mail.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Const.cs" />
     <Compile Include="Service\PopClient.cs" />
     <Compile Include="Service\SmtpClient.cs" />
+    <Compile Include="Service\TransformContent.cs" />
+    <EmbeddedResource Include="Form_WriteMail.resx">
+      <DependentUpon>Form_WriteMail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Setting.resx">
+      <DependentUpon>Form_Setting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -69,7 +89,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="MailClient.cd" />
+    <None Include="Properties\DataSources\MailClient.Model.Mail.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,6 +105,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assests\Icon\Refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

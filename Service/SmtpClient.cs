@@ -10,15 +10,17 @@ using MailClient.Model;
 
 namespace MailClient.Service
 {
-    class SmtpClient
+    public class SmtpClient
     {
         private Socket server;
         public string User { get; set; }
         public string Password { private get; set; }
-        public IPAddress Host { get; set; }
+        public string Host { get; set; }
         public int Port { get; set; }
         public States State { get; set; }
         public List<string> Log;
+        private NetworkStream strm;
+        private StreamReader rd;
 
         public SmtpClient()
         {
@@ -27,187 +29,154 @@ namespace MailClient.Service
             Log = new List<string>();
         }
 
-        public void Connect(IPAddress host,int port)
+        private void Connect(string host,int port)
         {
             Host = host;
             Port = port;
-            using(NetworkStream strm = new NetworkStream(server))
-            {
-                server.Connect(Host, Port);
-                Check(strm, "220");
-            }
+            server.Connect(Host, Port);
+            strm = new NetworkStream(server);
+            rd = new StreamReader(strm);
+            Check("220");
             State = States.Connect;
         }
-        
-        public void Login(IPAddress host, int port, string user, string password)
+
+        public void Login(string host, int port, string user, string password)
         {
             User = user;
             Password = password;
 
             Connect(host, port);
-            using (NetworkStream strm = new NetworkStream(server))
-            {
-                string cmdData;
-                byte[] sdData;
 
-                //Login
-                cmdData = "HELO" + host.ToString() + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "250");
+            string cmdData;
+            byte[] sdData;
 
-                cmdData = "AUTH LOGIN" + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "334");
+            //Login
+            cmdData = "HELO " + host.ToString() + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("250");
 
-                cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(User)) + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "334");
+            cmdData = "AUTH LOGIN" + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("334");
 
-                cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(Password)) + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "235");
+            cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(User)) + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("334");
 
-                State = States.Login;
-            }
+            cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(Password)) + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("235");
+
+            State = States.Login;
+
         }
 
         public void Send(string from, string subject, string message = "", params string[] to)
         {
-            using(NetworkStream strm = new NetworkStream(server))
+
+            string cmdData;
+            byte[] sdData;
+
+            State = States.Sending;
+
+            cmdData = "MAIL FROM: <" + from + '>' + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("250", "251");
+
+            foreach (string t in to)
             {
-                string cmdData;
-                byte[] sdData;
-
-                State = States.Sending;
-
-                cmdData = "MAIL FROM: <" + from + '>' + Const.CRLF;
+                cmdData = "RCPT TO: <" + t + '>' + Const.CRLF;
                 sdData = Encoding.ASCII.GetBytes(cmdData);
                 strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "250", "251");
-
-                foreach (string t in to)
-                {
-                    cmdData = "RCPT TO: <" + t + '>' + Const.CRLF;
-                    sdData = Encoding.ASCII.GetBytes(cmdData);
-                    strm.Write(sdData, 0, sdData.Length);
-                    Check(strm, "250", "251");
-                }
-
-                cmdData = "DATA" + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "354");
-
-                cmdData = "from: " + from + Const.CRLF;
-                cmdData += "to: " + String.Join(",", to) + Const.CRLF;
-                cmdData += "subject: " + subject + Const.CRLF;
-                cmdData += Const.CRLF;
-                cmdData += (message + Const.CRLF + '.' + Const.CRLF);
-                sdData = Encoding.UTF8.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "250");
-
-                State = States.Login;
+                Check("250", "251");
             }
+
+            cmdData = "DATA" + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("354");
+
+            cmdData = "from: " + from + Const.CRLF;
+            cmdData += "to: " + String.Join(",", to) + Const.CRLF;
+            cmdData += "subject: " + subject + Const.CRLF;
+            cmdData += Const.CRLF;
+            cmdData += (message + Const.CRLF + '.' + Const.CRLF);
+            sdData = Encoding.UTF8.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
+            Check("250");
+
+            State = States.Login;
+
         }
 
         public void Send(Mail mail)
         {
-            using (NetworkStream strm = new NetworkStream(server))
-            {
-                string cmdData;
-                byte[] sdData;
-
-                State = States.Sending;
-
-                cmdData = "MAIL FROM: <" + mail.From + '>' + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "250", "251");
-
-                foreach (string t in mail.To)
-                {
-                    cmdData = "RCPT TO: <" + t + '>' + Const.CRLF;
-                    sdData = Encoding.ASCII.GetBytes(cmdData);
-                    strm.Write(sdData, 0, sdData.Length);
-                    Check(strm, "250", "251");
-                }
-
-                cmdData = "DATA" + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "354");
-
-                cmdData = "from: " + mail.From + Const.CRLF;
-                cmdData += "to: " + String.Join(",", mail.To) + Const.CRLF;
-                cmdData += "subject: " + mail.Subject + Const.CRLF;
-                cmdData += Const.CRLF;
-                cmdData += (mail.Message + Const.CRLF + '.' + Const.CRLF);
-                sdData = Encoding.UTF8.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
-                Check(strm, "250");
-
-                State = States.Login;
-            }
+            Send(mail.From, mail.Subject, mail.Message, mail.To.ToArray());
         }
 
         public void Quit()
         {
-            using(NetworkStream strm = new NetworkStream(server))
-            {
-                string cmdData;
-                byte[] sdData;
+            string cmdData;
+            byte[] sdData;
 
-                cmdData = "QUIT" + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
+            cmdData = "QUIT" + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
 
-                server.Close();
+            server.Close();
+            strm.Dispose();
+            rd.Dispose();
 
-                State = States.DisConn;
-            }
+            State = States.DisConn;
         }
 
-        public bool Check(NetworkStream strm, params string[] expected)
+        public bool Check(params string[] expected)
         {
             bool flag = false;
+            string res = "";
 
-            using (StreamReader rd = new StreamReader(strm))
+            if (expected.Contains("250"))
             {
-                if (strm.DataAvailable)
+                do
                 {
-                    string res = rd.ReadLine();
+                    res = rd.ReadLine();
                     Log.Add(res);
-                    foreach (string e in expected)
-                    {
-                        if (res.Contains(e))
-                            flag = true;
-                        break;
-                    }
+                } while (!res.Contains("OK"));
+            }
+            else
+            {
+                res = rd.ReadLine();
+                Log.Add(res);
+            }
+            
+            foreach (string e in expected)
+            {
+                if (res.Contains(e))
+                {
+                    flag = true;
+                    break;
+                }
+            }
 
-                    if (!flag)
-                    {
-                        Quit();
-                        if (Const.SmtpError.TryGetValue(res.Substring(0, 3), out string err))
-                        {
-                            throw new WebException(err);
-                        }
-                        else
-                        {
-                            throw new WebException("Unknown Error");
-                        }
-                    }
+            if (!flag)
+            {
+                if (Const.SmtpError.TryGetValue(res.Substring(0, 3), out string err))
+                {
+                    throw new WebException(err);
                 }
                 else
                 {
-                    throw new WebException("No data to read");
+                    throw new WebException("Unknown Error");
                 }
             }
+
             return flag;
+
         }
         
     }

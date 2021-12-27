@@ -5,21 +5,23 @@ using System.Text.RegularExpressions;
 
 
 
-//¶Ô½âÎö¹ıÀ´µÄÓÊ¼şÄÚÈİ½øĞĞ½âÎö
-namespace MailClient.Transform
+//å¯¹è§£æè¿‡æ¥çš„é‚®ä»¶å†…å®¹è¿›è¡Œè§£æ
+
+namespace MailClient.TransformContent
 {
-    class Transform
+    public class Transform
     {
         public string Content { get; set; }
-        public string MailTo { get; set; }
+        public string[] MailTo { get; set; }
         public string MailFrom { get; set; }
         public string Subject { get; set; }
         public string Date { get; set; }
         public string[] ContentType { get; set; }
-        //Ò»°ãÓĞtext,multipartµÈÀàĞÍ,·µ»ØÖµÎªÈç{"text","html","gbk"}
+        //ä¸€èˆ¬æœ‰text,multipartç­‰ç±»å‹,è¿”å›å€¼ä¸ºå¦‚{"text","html","gbk"}
         public string TransferEncoding { get; set; }
+        public Transform() { }
 
-
+        //åŸæ¥çš„å‡½æ•°åªåŒ…å«å¯¹äºä¸€å°é‚®ä»¶è¿›è¡Œè§£æ
         public void transform(string oriContent)
         {
             StreamReader stream;
@@ -40,11 +42,26 @@ namespace MailClient.Transform
                     catch (Exception e) { throw e.InnerException; }
                     continue;
                 }
-                if (row.IndexOf("To:") != -1)
+
+                if (row.IndexOf("To:") != -1 && row.IndexOf("<") != -1)
                 {
                     try
                     {
-                        MailTo = row.Substring(row.IndexOf(":") + 2);
+                        
+                        string[] AMailTo;
+                        AMailTo = row.Substring(row.IndexOf(":") + 2).Trim().Split(' ');
+                        MailTo = new string[3];
+                        for(int k = 1; k < AMailTo.Length; k++)
+                        {
+                            MailTo[k - 1] = AMailTo[k];
+                            if (MailTo[k - 1].IndexOf("<") != -1)
+                            {
+                                int i = MailTo[k-1].IndexOf("<");
+                                int j = MailTo[k-1].IndexOf(">");
+                                MailTo[k - 1] = MailTo[k - 1].Substring(i + 1, j - i - 1);
+                            }
+                        }
+
 
                     }
                     catch (Exception e) { throw e.InnerException; }
@@ -69,40 +86,75 @@ namespace MailClient.Transform
                     catch (Exception e) { throw e.InnerException; }
                     continue;
                 }
-                if (row.IndexOf("Content-Type") != -1)
+                if (row.IndexOf("This is a multi-part message in MIME format") != -1)
                 {
-                    string[] str, rt, s3;
-                    string s = row;
-                    rt = new string[3];
-                    s += stream.ReadLine(); //°ÑÏÂÒ»ĞĞµÄcharset¼ÓÉÏ
-                    s = s.Replace('"', ' ');
-                    str = s.Split(';');
-                    str[0] = str[0].Trim();//·Ö±ğ´¦ÀíÁ½¶Î
-                    str[1] = str[1].Trim();
-                    s3 = str[0].Substring(str[0].IndexOf(" ") + 1).Trim().Split('/');
-                    rt[0] = s3[0];
-                    rt[1] = s3[1];
-                    rt[2] = str[1].Substring(str[1].IndexOf("=") + 1).Trim();
-                    try
+                    while (stream.EndOfStream == false)
                     {
-                        ContentType = new string[3];
-                        ContentType = rt;
+                        row = stream.ReadLine();
+                        if (row.IndexOf("Content-Type") != -1)
+                        {
+                            string[] str, rt, s3;
+                            string s = row;
+                            rt = new string[3];
+                            s += stream.ReadLine(); //æŠŠä¸‹ä¸€è¡Œçš„charsetåŠ ä¸Š
+                            s = s.Replace('"', ' ');
+                            str = s.Split(';');
+                            str[0] = str[0].Trim();//åˆ†åˆ«å¤„ç†ä¸¤æ®µ
+                            str[1] = str[1].Trim();
+                            s3 = str[0].Substring(str[0].IndexOf(" ") + 1).Trim().Split('/');
+                            rt[0] = s3[0];
+                            rt[1] = s3[1];
+                            rt[2] = str[1].Substring(str[1].IndexOf("=") + 1).Trim();
+                            try
+                            {
+                                this.ContentType = rt;
+                            }
+                            catch (Exception e) { throw e.InnerException; }
+                            continue;
+                        }
+                        if (row.IndexOf("Content-Transfer-Encoding:") != -1)
+                        {
+                            try
+                            {
+                                string ecoding= row.Substring((row.IndexOf(":") + 2));                                                               
+                                this.TransferEncoding = ecoding;                               
+                                //æŠŠcontentå†…å®¹æ”¾åœ¨Content-Transfer-Ecodongåé¢
+                                row = stream.ReadLine();
+                                
+                                if(row == "") { row = stream.ReadLine(); }
+                                if (row.IndexOf("==") != -1)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    while (row.IndexOf("------=_NextPart") == -1)
+                                    {
+                                        if (ContentType[1] == "html")
+                                        {
+                                            Content += row;
+                                            row = stream.ReadLine();
+                                        }
+                                        else { row = stream.ReadLine(); }
+
+                                    }
+                                }/*
+                                if (row == "") { row = stream.ReadLine(); }
+                                while(row != "")
+                                {
+                                    Content += row;
+                                    row = stream.ReadLine();
+                                }*/
+                            }
+                            catch (Exception e) { throw e.InnerException; }
+                            continue;
+                        }
 
                     }
-                    catch (Exception e) { throw e.InnerException; }
-                    continue;
-                }
-                if (row.IndexOf("Content-Transfer-Encoding:") != -1)
-                {
-                    try
-                    {
-                        TransferEncoding = row.Substring((row.IndexOf(":") + 2));
-                    }
-                    catch (Exception e) { throw e.InnerException; }
-                    continue;
                 }
             }
-            //×îºó¶ÔÓÊ¼şµÄÄÚÈİ½øĞĞ½âÂë.ÊÊÓÃ²»Í¬´¦Àí·½Ê½
+            //Console.WriteLine(ContentType[0] + ContentType[1] + ContentType[2]);
+            //æœ€åå¯¹é‚®ä»¶çš„å†…å®¹è¿›è¡Œè§£ç .é€‚ç”¨ä¸åŒå¤„ç†æ–¹å¼
             if (ContentType[0] == "text")
             {
                 switch (TransferEncoding)
@@ -119,15 +171,15 @@ namespace MailClient.Transform
                         ;
                 }
             }
-            //¿ÉÄÜ²»Í¬µÄÄÚÈİĞÎÊ½»¹»á¶Ô¿Ø¼şµÄÑ¡ÔñÔì³ÉÓ°Ïì£¬ÕâÀïÏÈ²»×ö£¬ÓĞÎÊÌâÔÙËµ
-            //ÆäÖĞÓÉÓÚ¸½¼ş´¦Àí¸´ÔÓ£¬ÕâÀï¾ÍÃ»ÓĞ´¦Àí
+            //å¯èƒ½ä¸åŒçš„å†…å®¹å½¢å¼è¿˜ä¼šå¯¹æ§ä»¶çš„é€‰æ‹©é€ æˆå½±å“ï¼Œè¿™é‡Œå…ˆä¸åšï¼Œæœ‰é—®é¢˜å†è¯´
+            //å…¶ä¸­ç”±äºé™„ä»¶å¤„ç†å¤æ‚ï¼Œè¿™é‡Œå°±æ²¡æœ‰å¤„ç†
             /*
             if (ContentType[1] == "html")
             {
-                //ÇĞ»»µ½htmlÀàĞÍµÄä¯ÀÀÆ÷¿Ø¼ş
+                //åˆ‡æ¢åˆ°htmlç±»å‹çš„æµè§ˆå™¨æ§ä»¶
                 webBrower.DucumentText = Content;
             }
-            else { richTextBoxContent.Text = Content; } //ÎÄ±¾ÎÄ¼ş
+            else { richTextBoxContent.Text = Content; } //æ–‡æœ¬æ–‡ä»¶
             */
         }
 
@@ -147,7 +199,7 @@ namespace MailClient.Transform
             return decode;
         }
 
-        //¸ù¾İ×Ö·û´®´´½¨Ò»¸öÎÄ¼şÁ÷
+        //æ ¹æ®å­—ç¬¦ä¸²åˆ›å»ºä¸€ä¸ªæ–‡ä»¶æµ
         private Stream GenerateStreamFromString(string s)
         {
 
@@ -161,11 +213,11 @@ namespace MailClient.Transform
         }
 
 
-        //×ª»»Ö÷Ìâ¸ñÊ½
+        //è½¬æ¢ä¸»é¢˜æ ¼å¼
         private string SubTransform(string subject)
         {
             subject = subject.Trim();
-            //±êÌâµÄÕıÔò±í´ïÊ½
+            //æ ‡é¢˜çš„æ­£åˆ™è¡¨è¾¾å¼
             Regex regex = new Regex(@"=\?([\s\S]+)\?=");
             MatchCollection match = regex.Matches(subject);
             for (int i = 0; i < match.Count; i++)
@@ -182,7 +234,7 @@ namespace MailClient.Transform
             {
                 s = DecodeBase64("GBK", divString[3]);
 
-            }//½øĞĞquoted-printable×ª»»×Ö·û
+            }//è¿›è¡Œquoted-printableè½¬æ¢å­—ç¬¦
             else { s = QuotedPrintable(divString[3], divString[1]); }
             return s;
         }
@@ -229,17 +281,19 @@ namespace MailClient.Transform
             return dest;
         }
 
-        //»ñÈ¡ÓÊ¼şµÄÎÄ±¾ÄÚÈİ£¨wÎ´½âÂë£©
+        //è·å–é‚®ä»¶çš„æ–‡æœ¬å†…å®¹ï¼ˆwæœªè§£ç ï¼‰
         private string GetContent(string oriContent)
         {
             string s = "";
             StreamReader stream;
             stream = new StreamReader(GenerateStreamFromString(oriContent));
             string row = stream.ReadLine();
-            while (row != "\r\n") { row = stream.ReadLine(); }
-            //´ËÊ±ÔÚµÚÒ»¸öCRLFµÄÎ»ÖÃ £¿²ÉÈ¡Ö±½ÓÈ«²¿¶ÁÈ¡µÄ·½·¨£¬¿ÉÄÜÒª¸Ä½ø
+
+            while (row != "") { row = stream.ReadLine(); }
+            //æ­¤æ—¶åœ¨ç¬¬ä¸€ä¸ªCRLFçš„ä½ç½® ï¼Ÿé‡‡å–ç›´æ¥å…¨éƒ¨è¯»å–çš„æ–¹æ³•ï¼Œå¯èƒ½è¦æ”¹è¿›
             while (stream.EndOfStream == false)
             {
+                row = stream.ReadLine();
                 s += row;
             }
             return s;

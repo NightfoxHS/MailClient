@@ -44,13 +44,13 @@ namespace MailClient
             this.ToolStripButton_Refresh = new System.Windows.Forms.ToolStripButton();
             this.ToolStripButton_Setting = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel_Mail = new System.Windows.Forms.TableLayoutPanel();
-            this.Label_Subject = new System.Windows.Forms.Label();
-            this.Label_Subject_V = new System.Windows.Forms.Label();
-            this.Label_From = new System.Windows.Forms.Label();
-            this.Label_From_V = new System.Windows.Forms.Label();
-            this.Label_To = new System.Windows.Forms.Label();
             this.Label_To_V = new System.Windows.Forms.Label();
-            this.textBox_Message = new System.Windows.Forms.TextBox();
+            this.Label_To = new System.Windows.Forms.Label();
+            this.Label_From_V = new System.Windows.Forms.Label();
+            this.Label_From = new System.Windows.Forms.Label();
+            this.Label_Subject_V = new System.Windows.Forms.Label();
+            this.Label_Subject = new System.Windows.Forms.Label();
+            this.WebBrowser_Message = new System.Windows.Forms.WebBrowser();
             this.tableLayoutPanel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.ToolStrip_DownMenu.SuspendLayout();
@@ -82,8 +82,8 @@ namespace MailClient
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(702, 433);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(710, 451);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // statusStrip
@@ -96,62 +96,64 @@ namespace MailClient
             this.Status_Pop,
             this.Status_User_Smtp,
             this.Status_User_Pop});
-            this.statusStrip.Location = new System.Drawing.Point(0, 410);
+            this.statusStrip.Location = new System.Drawing.Point(0, 420);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(702, 23);
+            this.statusStrip.Size = new System.Drawing.Size(710, 31);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
             // 
             // Status_Smtp
             // 
             this.Status_Smtp.Name = "Status_Smtp";
-            this.Status_Smtp.Size = new System.Drawing.Size(79, 17);
+            this.Status_Smtp.Size = new System.Drawing.Size(79, 25);
             this.Status_Smtp.Text = "Smtp:220";
             // 
             // Status_Pop
             // 
             this.Status_Pop.Name = "Status_Pop";
-            this.Status_Pop.Size = new System.Drawing.Size(75, 17);
+            this.Status_Pop.Size = new System.Drawing.Size(75, 25);
             this.Status_Pop.Text = "Pop:+OK";
             // 
             // Status_User_Smtp
             // 
             this.Status_User_Smtp.Name = "Status_User_Smtp";
-            this.Status_User_Smtp.Size = new System.Drawing.Size(104, 17);
+            this.Status_User_Smtp.Size = new System.Drawing.Size(104, 25);
             this.Status_User_Smtp.Text = "Smtp:Offiline";
             // 
             // Status_User_Pop
             // 
             this.Status_User_Pop.Name = "Status_User_Pop";
-            this.Status_User_Pop.Size = new System.Drawing.Size(93, 17);
+            this.Status_User_Pop.Size = new System.Drawing.Size(93, 25);
             this.Status_User_Pop.Text = "Pop:Ofiiline";
             // 
             // Button_Write
             // 
             this.Button_Write.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Button_Write.Location = new System.Drawing.Point(42, 4);
+            this.Button_Write.Location = new System.Drawing.Point(43, 3);
             this.Button_Write.Name = "Button_Write";
-            this.Button_Write.Size = new System.Drawing.Size(91, 33);
+            this.Button_Write.Size = new System.Drawing.Size(91, 36);
             this.Button_Write.TabIndex = 1;
             this.Button_Write.Text = "写信";
             this.Button_Write.UseVisualStyleBackColor = true;
+            this.Button_Write.Click += new System.EventHandler(this.Button_Write_Click);
             // 
             // listBox1
             // 
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(3, 85);
+            this.listBox1.Location = new System.Drawing.Point(3, 87);
             this.listBox1.Name = "listBox1";
             this.tableLayoutPanel1.SetRowSpan(this.listBox1, 7);
-            this.listBox1.Size = new System.Drawing.Size(169, 281);
+            this.listBox1.Size = new System.Drawing.Size(171, 288);
             this.listBox1.TabIndex = 2;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // Label_List_Title
             // 
             this.Label_List_Title.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Label_List_Title.AutoSize = true;
-            this.Label_List_Title.Location = new System.Drawing.Point(54, 54);
+            this.Label_List_Title.Location = new System.Drawing.Point(55, 55);
             this.Label_List_Title.Name = "Label_List_Title";
             this.Label_List_Title.Size = new System.Drawing.Size(67, 15);
             this.Label_List_Title.TabIndex = 3;
@@ -165,9 +167,9 @@ namespace MailClient
             this.ToolStripButton_Login,
             this.ToolStripButton_Refresh,
             this.ToolStripButton_Setting});
-            this.ToolStrip_DownMenu.Location = new System.Drawing.Point(0, 369);
+            this.ToolStrip_DownMenu.Location = new System.Drawing.Point(0, 378);
             this.ToolStrip_DownMenu.Name = "ToolStrip_DownMenu";
-            this.ToolStrip_DownMenu.Size = new System.Drawing.Size(175, 41);
+            this.ToolStrip_DownMenu.Size = new System.Drawing.Size(177, 42);
             this.ToolStrip_DownMenu.TabIndex = 4;
             this.ToolStrip_DownMenu.Text = "toolStrip1";
             // 
@@ -177,8 +179,9 @@ namespace MailClient
             this.ToolStripButton_Login.Image = ((System.Drawing.Image)(resources.GetObject("ToolStripButton_Login.Image")));
             this.ToolStripButton_Login.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolStripButton_Login.Name = "ToolStripButton_Login";
-            this.ToolStripButton_Login.Size = new System.Drawing.Size(29, 38);
-            this.ToolStripButton_Login.Text = "toolStripButton1";
+            this.ToolStripButton_Login.Size = new System.Drawing.Size(29, 39);
+            this.ToolStripButton_Login.Text = "登录";
+            this.ToolStripButton_Login.Click += new System.EventHandler(this.ToolStripButton_Login_Click);
             // 
             // ToolStripButton_Refresh
             // 
@@ -186,8 +189,9 @@ namespace MailClient
             this.ToolStripButton_Refresh.Image = ((System.Drawing.Image)(resources.GetObject("ToolStripButton_Refresh.Image")));
             this.ToolStripButton_Refresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolStripButton_Refresh.Name = "ToolStripButton_Refresh";
-            this.ToolStripButton_Refresh.Size = new System.Drawing.Size(29, 38);
-            this.ToolStripButton_Refresh.Text = "toolStripButton2";
+            this.ToolStripButton_Refresh.Size = new System.Drawing.Size(29, 39);
+            this.ToolStripButton_Refresh.Text = "刷新";
+            this.ToolStripButton_Refresh.Click += new System.EventHandler(this.ToolStripButton_Refresh_Click);
             // 
             // ToolStripButton_Setting
             // 
@@ -195,8 +199,9 @@ namespace MailClient
             this.ToolStripButton_Setting.Image = ((System.Drawing.Image)(resources.GetObject("ToolStripButton_Setting.Image")));
             this.ToolStripButton_Setting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolStripButton_Setting.Name = "ToolStripButton_Setting";
-            this.ToolStripButton_Setting.Size = new System.Drawing.Size(29, 38);
-            this.ToolStripButton_Setting.Text = "toolStripButton3";
+            this.ToolStripButton_Setting.Size = new System.Drawing.Size(29, 39);
+            this.ToolStripButton_Setting.Text = "设置";
+            this.ToolStripButton_Setting.Click += new System.EventHandler(this.ToolStripButton_Setting_Click);
             // 
             // tableLayoutPanel_Mail
             // 
@@ -209,9 +214,9 @@ namespace MailClient
             this.tableLayoutPanel_Mail.Controls.Add(this.Label_From, 0, 1);
             this.tableLayoutPanel_Mail.Controls.Add(this.Label_Subject_V, 1, 0);
             this.tableLayoutPanel_Mail.Controls.Add(this.Label_Subject, 0, 0);
-            this.tableLayoutPanel_Mail.Controls.Add(this.textBox_Message, 0, 3);
+            this.tableLayoutPanel_Mail.Controls.Add(this.WebBrowser_Message, 0, 3);
             this.tableLayoutPanel_Mail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel_Mail.Location = new System.Drawing.Point(178, 3);
+            this.tableLayoutPanel_Mail.Location = new System.Drawing.Point(180, 3);
             this.tableLayoutPanel_Mail.Name = "tableLayoutPanel_Mail";
             this.tableLayoutPanel_Mail.RowCount = 4;
             this.tableLayoutPanel1.SetRowSpan(this.tableLayoutPanel_Mail, 10);
@@ -219,87 +224,88 @@ namespace MailClient
             this.tableLayoutPanel_Mail.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel_Mail.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel_Mail.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel_Mail.Size = new System.Drawing.Size(521, 404);
+            this.tableLayoutPanel_Mail.Size = new System.Drawing.Size(527, 414);
             this.tableLayoutPanel_Mail.TabIndex = 5;
-            // 
-            // Label_Subject
-            // 
-            this.Label_Subject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Subject.AutoSize = true;
-            this.Label_Subject.Location = new System.Drawing.Point(3, 12);
-            this.Label_Subject.Name = "Label_Subject";
-            this.Label_Subject.Size = new System.Drawing.Size(150, 15);
-            this.Label_Subject.TabIndex = 0;
-            this.Label_Subject.Text = "标题：";
-            // 
-            // Label_Subject_V
-            // 
-            this.Label_Subject_V.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_Subject_V.AutoSize = true;
-            this.Label_Subject_V.Location = new System.Drawing.Point(159, 12);
-            this.Label_Subject_V.Name = "Label_Subject_V";
-            this.Label_Subject_V.Size = new System.Drawing.Size(359, 15);
-            this.Label_Subject_V.TabIndex = 1;
-            this.Label_Subject_V.Text = "label1";
-            // 
-            // Label_From
-            // 
-            this.Label_From.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_From.AutoSize = true;
-            this.Label_From.Location = new System.Drawing.Point(3, 52);
-            this.Label_From.Name = "Label_From";
-            this.Label_From.Size = new System.Drawing.Size(150, 15);
-            this.Label_From.TabIndex = 2;
-            this.Label_From.Text = "发信人：";
-            // 
-            // Label_From_V
-            // 
-            this.Label_From_V.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_From_V.AutoSize = true;
-            this.Label_From_V.Location = new System.Drawing.Point(159, 52);
-            this.Label_From_V.Name = "Label_From_V";
-            this.Label_From_V.Size = new System.Drawing.Size(359, 15);
-            this.Label_From_V.TabIndex = 3;
-            this.Label_From_V.Text = "label1";
-            // 
-            // Label_To
-            // 
-            this.Label_To.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_To.AutoSize = true;
-            this.Label_To.Location = new System.Drawing.Point(3, 92);
-            this.Label_To.Name = "Label_To";
-            this.Label_To.Size = new System.Drawing.Size(150, 15);
-            this.Label_To.TabIndex = 4;
-            this.Label_To.Text = "收信人";
             // 
             // Label_To_V
             // 
             this.Label_To_V.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Label_To_V.AutoSize = true;
-            this.Label_To_V.Location = new System.Drawing.Point(159, 92);
+            this.Label_To_V.Location = new System.Drawing.Point(161, 95);
             this.Label_To_V.Name = "Label_To_V";
-            this.Label_To_V.Size = new System.Drawing.Size(359, 15);
+            this.Label_To_V.Size = new System.Drawing.Size(363, 15);
             this.Label_To_V.TabIndex = 5;
-            this.Label_To_V.Text = "label1";
+            this.Label_To_V.Text = "To";
             // 
-            // textBox_Message
+            // Label_To
             // 
-            this.tableLayoutPanel_Mail.SetColumnSpan(this.textBox_Message, 2);
-            this.textBox_Message.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox_Message.Location = new System.Drawing.Point(3, 123);
-            this.textBox_Message.Multiline = true;
-            this.textBox_Message.Name = "textBox_Message";
-            this.textBox_Message.Size = new System.Drawing.Size(515, 278);
-            this.textBox_Message.TabIndex = 6;
+            this.Label_To.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_To.AutoSize = true;
+            this.Label_To.Location = new System.Drawing.Point(3, 95);
+            this.Label_To.Name = "Label_To";
+            this.Label_To.Size = new System.Drawing.Size(152, 15);
+            this.Label_To.TabIndex = 4;
+            this.Label_To.Text = "收信人";
+            // 
+            // Label_From_V
+            // 
+            this.Label_From_V.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_From_V.AutoSize = true;
+            this.Label_From_V.Location = new System.Drawing.Point(161, 54);
+            this.Label_From_V.Name = "Label_From_V";
+            this.Label_From_V.Size = new System.Drawing.Size(363, 15);
+            this.Label_From_V.TabIndex = 3;
+            this.Label_From_V.Text = "From";
+            // 
+            // Label_From
+            // 
+            this.Label_From.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_From.AutoSize = true;
+            this.Label_From.Location = new System.Drawing.Point(3, 54);
+            this.Label_From.Name = "Label_From";
+            this.Label_From.Size = new System.Drawing.Size(152, 15);
+            this.Label_From.TabIndex = 2;
+            this.Label_From.Text = "发信人：";
+            // 
+            // Label_Subject_V
+            // 
+            this.Label_Subject_V.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Subject_V.AutoSize = true;
+            this.Label_Subject_V.Location = new System.Drawing.Point(161, 13);
+            this.Label_Subject_V.Name = "Label_Subject_V";
+            this.Label_Subject_V.Size = new System.Drawing.Size(363, 15);
+            this.Label_Subject_V.TabIndex = 1;
+            this.Label_Subject_V.Text = "Subject";
+            // 
+            // Label_Subject
+            // 
+            this.Label_Subject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_Subject.AutoSize = true;
+            this.Label_Subject.Location = new System.Drawing.Point(3, 13);
+            this.Label_Subject.Name = "Label_Subject";
+            this.Label_Subject.Size = new System.Drawing.Size(152, 15);
+            this.Label_Subject.TabIndex = 0;
+            this.Label_Subject.Text = "标题：";
+            // 
+            // WebBrowser_Message
+            // 
+            this.tableLayoutPanel_Mail.SetColumnSpan(this.WebBrowser_Message, 2);
+            this.WebBrowser_Message.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WebBrowser_Message.Location = new System.Drawing.Point(3, 126);
+            this.WebBrowser_Message.MinimumSize = new System.Drawing.Size(20, 20);
+            this.WebBrowser_Message.Name = "WebBrowser_Message";
+            this.WebBrowser_Message.Size = new System.Drawing.Size(521, 285);
+            this.WebBrowser_Message.TabIndex = 6;
             // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 433);
+            this.ClientSize = new System.Drawing.Size(710, 451);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form_Main";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -334,7 +340,7 @@ namespace MailClient
         private System.Windows.Forms.Label Label_From;
         private System.Windows.Forms.Label Label_Subject_V;
         private System.Windows.Forms.Label Label_Subject;
-        private System.Windows.Forms.TextBox textBox_Message;
+        private System.Windows.Forms.WebBrowser WebBrowser_Message;
     }
 }
 
