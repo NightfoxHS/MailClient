@@ -40,7 +40,7 @@ namespace MailClient
                 {
                     smtp.Login(user.SmtpHost, user.SmtpPort, user.UserName, user.Password);
                     pop.Login(user.PopHost, user.PopPort, user.UserName, user.Password);
-                    mails = pop.GetAllMail();
+                    mails = pop.GetAllMails();
                     ResetListBox();
                 }
                 else
@@ -92,7 +92,7 @@ namespace MailClient
             {
                 if (pop.State == States.Login)
                 {
-                    mails = pop.GetAllMail();
+                    mails = pop.GetAllMails();
                     ResetListBox();
                 }
                 else

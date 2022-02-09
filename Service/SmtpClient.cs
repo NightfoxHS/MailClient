@@ -47,35 +47,24 @@ namespace MailClient.Service
 
             Connect(host, port);
 
-            string cmdData;
-            byte[] sdData;
-
             //Login
-            cmdData = "HELO " + host.ToString() + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("HELO ");
             Check("250");
 
-            cmdData = "AUTH LOGIN" + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("AUTH LOGIN");
             Check("334");
 
-            cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(User)) + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer(Convert.ToBase64String(Encoding.ASCII.GetBytes(User)));
             Check("334");
 
-            cmdData = Convert.ToBase64String(Encoding.ASCII.GetBytes(Password)) + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer(Convert.ToBase64String(Encoding.ASCII.GetBytes(Password)));
             Check("235");
 
             State = States.Login;
 
         }
 
-        public void Send(string from, string subject, string message = "", params string[] to)
+        public void SendMail(string from, string subject, string message = "", params string[] to)
         {
 
             string cmdData;
@@ -83,22 +72,16 @@ namespace MailClient.Service
 
             State = States.Sending;
 
-            cmdData = "MAIL FROM: <" + from + '>' + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("MAIL FROM: <" + from + '>');
             Check("250", "251");
 
             foreach (string t in to)
             {
-                cmdData = "RCPT TO: <" + t + '>' + Const.CRLF;
-                sdData = Encoding.ASCII.GetBytes(cmdData);
-                strm.Write(sdData, 0, sdData.Length);
+                SendCommandToServer("RCPT TO: <" + t + '>');
                 Check("250", "251");
             }
 
-            cmdData = "DATA" + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("DATA");
             Check("354");
 
             cmdData = "from: " + from + Const.CRLF;
@@ -116,17 +99,12 @@ namespace MailClient.Service
 
         public void Send(Mail mail)
         {
-            Send(mail.From, mail.Subject, mail.Message, mail.To.ToArray());
+            SendMail(mail.From, mail.Subject, mail.Message, mail.To.ToArray());
         }
 
         public void Quit()
         {
-            string cmdData;
-            byte[] sdData;
-
-            cmdData = "QUIT" + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("QUIT");
 
             server.Close();
             strm.Dispose();
@@ -177,6 +155,16 @@ namespace MailClient.Service
 
             return flag;
 
+        }
+
+        private void SendCommandToServer(String cmdBody)
+        {
+            string cmdData;
+            byte[] sdData;
+
+            cmdData = cmdBody + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
         }
         
     }

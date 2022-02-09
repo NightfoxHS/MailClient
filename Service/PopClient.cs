@@ -48,17 +48,10 @@ namespace MailClient.Service
 
             Connect(host, port);
 
-            string cmdData;
-            byte[] sdData;
-
-            cmdData = "User " + User + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("User " + User);
             Check();
 
-            cmdData = "PASS " + Password + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("PASS " + Password);
             Check();
 
             State = States.Login;
@@ -70,12 +63,7 @@ namespace MailClient.Service
 
             State = States.Receiving;
 
-            string cmdData;
-            byte[] sdData;
-
-            cmdData = "RETR " + index + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("RETR " + index);
             Check();
 
             string _res = "";
@@ -92,19 +80,14 @@ namespace MailClient.Service
         }
 
         //对原来的函数进行更改
-        public List<Mail> GetAllMail()
+        public List<Mail> GetAllMails()
         {
             List<Mail> ret = new List<Mail>();
 
-
-            string cmdData;
-            byte[] sdData;
             string[] res = new string[3];
             int num = 0;
 
-            cmdData = "STAT " + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("STAT ");
 
             res = rd.ReadLine().Split(' ');
             if (res[0][0] == '+')
@@ -132,23 +115,13 @@ namespace MailClient.Service
 
         public void Delete(int index)
         {
-            string cmdData;
-            byte[] sdData;
-
-            cmdData = "DELE " + index + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("DELE " + index);
             Check();
         }
 
         public void Quit()
         {
-            string cmdData;
-            byte[] sdData;
-
-            cmdData = "QUIT " + Const.CRLF;
-            sdData = Encoding.ASCII.GetBytes(cmdData);
-            strm.Write(sdData, 0, sdData.Length);
+            SendCommandToServer("QUIT ");
             Check();
 
             server.Close();
@@ -173,6 +146,16 @@ namespace MailClient.Service
             }
 
             return flag;
+        }
+
+        private void SendCommandToServer(String cmdBody)
+        {
+            string cmdData;
+            byte[] sdData;
+
+            cmdData = cmdBody + Const.CRLF;
+            sdData = Encoding.ASCII.GetBytes(cmdData);
+            strm.Write(sdData, 0, sdData.Length);
         }
     }
 }
